@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Caesar Cipher</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="container-one" class="container">
+    <h1>ssh......its a secret</h1>
+  </div>
+
+  <div id="container-two" class="container column">
+    <label>
+      <textarea id="plainInput-1" placeholder="Type in plain text"></textarea>
+    </label>
+
+    <input type="number" id="shiftInput" min="0" max="25" placeholder="Shift" />
+
+    <button id="encrypt-btn">Encrypt</button>
+
+    <label>
+      <textarea id="encryptedInput-1" placeholder="Encrypted text will appear here.."></textarea>
+    </label>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
