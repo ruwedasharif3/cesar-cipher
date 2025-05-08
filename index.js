@@ -1,36 +1,68 @@
-let encryptBtn = document.getElementById('encrypt-btn');
-let eInput = document.getElementById('encryptedInput-1');
-let plainInput = document.getElementById('plainInput-1');
-let shiftInput = document.getElementById('shiftInput');
+function caesarCipher(text, shift, isEncrypting) {
+  let result = '';
 
-let inputs = [plainInput, eInput];
+  shift = shift % 26;
 
-inputs.forEach(input => {
-  input.oninput = () => {
-    input.value = input.value.toUpperCase();
-  };
-});
+  for (let i = 0; i < text.length; i++) {
+      let char = text[i];
 
-function encrypt() {
-  let pInputValue = plainInput.value;
-  let solved = '';
-  let shift = parseInt(shiftInput.value);
+      if (char >= 'a' && char <= 'z') {
+          let charCode = text.charCodeAt(i);
+          let shiftedCharCode = isEncrypting
+              ? charCode + shift
+              : charCode - shift;
 
-  for (let i = 0; i < pInputValue.length; i++) {
-    let ascii = pInputValue[i].charCodeAt();
+          if (shiftedCharCode > 122) {
+              shiftedCharCode -= 26;
+          } else if (shiftedCharCode < 97) {
+              shiftedCharCode += 26;
+          }
 
-    if (ascii >= 65 && ascii <= 90) {
-      let shifted = ascii + shift;
-      if (shifted > 90) {
-        shifted = 65 + (shifted - 91);
+          result += String.fromCharCode(shiftedCharCode);
       }
-      solved += String.fromCharCode(shifted);
-    } else {
-      solved += pInputValue[i];
-    }
+      else if (char >= 'A' && char <= 'Z') {
+          let charCode = text.charCodeAt(i);
+          let shiftedCharCode = isEncrypting
+              ? charCode + shift
+              : charCode - shift;
+
+          if (shiftedCharCode > 90) {
+              shiftedCharCode -= 26;
+          } else if (shiftedCharCode < 65) {
+              shiftedCharCode += 26;
+          }
+
+          result += String.fromCharCode(shiftedCharCode);
+      } else {
+          result += char;
+      }
   }
 
-  eInput.value = solved;
+  return result;
 }
 
-encryptBtn.onclick = encrypt;
+document.getElementById('encrypt-btn').addEventListener('click', function() {
+  let text = document.getElementById('plainInput-1').value; 
+  let shift = parseInt(document.getElementById('shiftInput').value); 
+
+  if (isNaN(shift) || shift < 1 || shift > 25) {
+      alert("Please enter a valid shift value between 1 and 25.");
+      return;
+  }
+
+  let encryptedText = caesarCipher(text, shift, true);  
+  document.getElementById('encryptedInput-1').value = encryptedText;  
+});
+
+document.getElementById('decrypt-btn').addEventListener('click', function() {
+  let text = document.getElementById('encryptedInput-1').value; 
+  let shift = parseInt(document.getElementById('shiftInput').value); 
+
+  if (isNaN(shift) || shift < 1 || shift > 25) {
+      alert("Please enter a valid shift value between 1 and 25.");
+      return;
+  }
+
+  let decryptedText = caesarCipher(text, shift, false);  
+  document.getElementById('encryptedInput-1').value = decryptedText;  
+});
